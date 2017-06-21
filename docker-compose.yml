@@ -1,0 +1,14 @@
+version: "3"
+services:
+  cassandra:
+    build: .
+    image: zenoss/zing-cassandra:dev
+    command: "cassandra -f"
+    environment:
+      - CASSANDRA_BROADCAST_ADDRESS=cassandra
+      - CASSANDRA_SEEDS=cassandra
+    volumes:
+      - "cassandra:/var/lib/cassandra"
+
+volumes:
+  cassandra:
