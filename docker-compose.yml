@@ -2,7 +2,7 @@ version: "3"
 services:
   cassandra:
     build: .
-    image: ${IMAGE:-zenoss/zing-cassandra:dev}
+    image: ${SERVICE_IMAGE}:${IMAGE_TAG:-dev}
     command: "cassandra -f"
     environment:
       - CASSANDRA_BROADCAST_ADDRESS=cassandra
