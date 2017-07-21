@@ -18,10 +18,10 @@ node('docker') {
     }
 
     checkout scm
-    SHA=sh(script: 'git rev-parse --short=8 HEAD', returnStdout: true).trim()
 
 	withEnv([
-		"IMAGE_TAG=${SHA}",
+		"COMMIT_SHA=${env.ghprbActualCommit}",
+		"IMAGE_TAG=${env.ghprbActualCommit.substring(0,8)}",
 		"PROJECT_NAME=cassandra-${env.BUILD_NUMBER}"]) {
 		try	{
 			stage('Run service tests') {

@@ -5,7 +5,7 @@ IMAGE_NAME   := ${SERVICE_IMAGE}:${IMAGE_TAG}
 REMOTE_IMAGE := ${REPOSITORY}/${SERVICE_IMAGE}:$(if ${REMOTE_TAG},${REMOTE_TAG},${IMAGE_TAG})
 
 .PHONY: build
-build: export COMMIT_SHA := $(shell git rev-parse HEAD)
+build: export COMMIT_SHA ?= $(shell git rev-parse HEAD)
 build: $(DOCKER_COMPOSE)
 	@$(DOCKER_COMPOSE) build cassandra
 

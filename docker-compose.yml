@@ -1,7 +1,14 @@
-version: "3"
+version: "3.3"
 services:
   cassandra:
-    build: .
+    build:
+      context: .
+      labels:
+        zenoss.zing.commit-sha: ${COMMIT_SHA:-none}
+        zenoss.zing.pull-request: ${CHANGE_ID:-none}
+        zenoss.zing.branch_name: ${BRANCH_NAME:-none}
+        zenoss.zing.build_number: ${BUILD_ID:-none}
+        zenoss.zing.build_url: ${BUILD_URL:-none}
     image: ${SERVICE_IMAGE}:${IMAGE_TAG:-dev}
     command: "cassandra -f"
     environment:
