@@ -2,7 +2,7 @@ include .env
 include Makefile
 
 IMAGE_NAME   := ${SERVICE_IMAGE}:${IMAGE_TAG}
-REMOTE_IMAGE := ${REPOSITORY}/${SERVICE_IMAGE}:$(if ${REMOTE_TAG},${REMOTE_TAG},${IMAGE_TAG})
+REMOTE_IMAGE := ${REGISTRY}/${SERVICE_IMAGE}:$(if ${REMOTE_TAG},${REMOTE_TAG},${IMAGE_TAG})
 
 .PHONY: build
 build: export COMMIT_SHA ?= $(shell git rev-parse HEAD)
@@ -39,7 +39,7 @@ IMAGE_NAME_VALID:
 
 .PHONY: REMOTE_IMAGE_VALID
 REMOTE_IMAGE_VALID:
-	@test ${REPOSITORY} || (echo "REPOSITORY must be defined"; false)
+	@test ${REGISTRY} || (echo "REGISTRY must be defined"; false)
 	@test ${SERVICE_IMAGE} || (echo "SERVICE_IMAGE must be defined"; false)
 	@test ${REMOTE_TAG}${IMAGE_TAG} || (echo "REMOTE_TAG or IMAGE_TAG must be defined"; false)
 
