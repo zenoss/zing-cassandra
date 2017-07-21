@@ -7,7 +7,7 @@
 //  version.yml         - docker-compose file that describes the version of the image to test
 //
 
-MAKE='make -f Makefile -f ci.mk'
+MAKE='make -f ci/Makefile'
 
 node('docker') {
     currentBuild.displayName = "PR #${env.ghprbPullId}@${env.NODE_NAME}"
