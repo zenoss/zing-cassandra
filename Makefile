@@ -26,17 +26,6 @@ build: $(DOCKER_COMPOSE)
 run: vendor $(DOCKER_COMPOSE)
 	@$(DOCKER_COMPOSE_BASE) up --build
 
-.PHONY: unit-test
-unit-test:
-	@echo Not implemented
-
-.PHONY: api-test
-api-test:
-	@echo Not implemented
-
-.PHONY: test
-test: unit-test
-
 .PHONY: clean
 clean:
 	$(DOCKER_COMPOSE_BASE) down

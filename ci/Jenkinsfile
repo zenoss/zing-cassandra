@@ -20,40 +20,14 @@ node('docker') {
         "IMAGE_TAG=${env.ghprbActualCommit.substring(0,8)}",
         "PROJECT_NAME=zing-cassandra-${env.BUILD_NUMBER}"]) {
         try {
-            stage('Unit tests') {
-                sh("${MAKE} unit-test")
-            }
-
             stage('Build image') {
                 sh("${MAKE} build")
-            }
-
-            stage('API tests') {
-                sh("${MAKE} api-test")
-            }
-
-            stage('Validate test results') {
-                junit allowEmptyResults: true, testResults: "**/junit.xml"
-                step([
-                    $class: 'CoberturaPublisher',
-                    autoUpdateHealth: false,
-                    autoUpdateStability: false,
-                    failNoReports: false,
-                    coberturaReportFile: 'coverage/coverage.xml',
-                    failUnhealthy: true,
-                    failUnstable: true,
-                    maxNumberOfBuilds: 0,
-                    onlyStable: false,
-                    sourceEncoding: 'ASCII',
-                    zoomCoverageChart: false,
-                ])  
             }
         } finally {
             stage ('Clean test environment') {
                 sh("${MAKE} ci-clean")
             }
         }
-
 
         stage('Publish image') {
             def pubSteps = [:]
