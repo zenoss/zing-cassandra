@@ -37,4 +37,4 @@ ci-clean:
 
 .PHONY: ci-mrclean
 ci-mrclean: ci-clean
-	rm -f ci/version.yaml
+	rm -f ci/version.yml
