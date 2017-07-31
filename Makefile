@@ -23,7 +23,7 @@ build: $(DOCKER_COMPOSE)
 	@$(DOCKER_COMPOSE_BASE) build cassandra
 
 .PHONY: run
-run: vendor $(DOCKER_COMPOSE)
+run: $(DOCKER_COMPOSE)
 	@$(DOCKER_COMPOSE_BASE) up --build
 
 .PHONY: clean
