@@ -1,7 +1,10 @@
+SHELL                := /bin/bash
 DOCKER_COMPOSE       := /usr/local/bin/docker-compose
 
-.PHONY: default
-default: run
+DOCKER_COMPOSE_BASE  := $(DOCKER_COMPOSE)
+ifdef PROJECT_NAME
+DOCKER_COMPOSE_BASE  += -p $(PROJECT_NAME)
+endif
 
 .PHONY: docker-compose
 docker-compose: $(DOCKER_COMPOSE)
@@ -12,17 +15,31 @@ $(DOCKER_COMPOSE):
 	@curl -L https://github.com/docker/compose/releases/download/$(DOCKER_COMPOSE_VERSION)/docker-compose-`uname -s`-`uname -m` > $@
 	@chmod +x $@
 
+.PHONY: build
+build: export COMMIT_SHA ?= $(shell git rev-parse HEAD)
+build: export GIT_BRANCH ?= $(shell git symbolic-ref HEAD | sed -e "s/^refs\/heads\///")
+build: export PULL_REQUEST = ${ghprbPullLink}
+build: $(DOCKER_COMPOSE)
+	@$(DOCKER_COMPOSE_BASE) build zing-cassandra
+
 .PHONY: run
-run: $(DOCKER_COMPOSE)
-	@$(DOCKER_COMPOSE) up --build
+run: vendor $(DOCKER_COMPOSE)
+	@$(DOCKER_COMPOSE_BASE) up --build
+
+.PHONY: unit-test
+unit-test:
+	@echo Not implemented
+
+.PHONY: api-test
+api-test:
+	@echo Not implemented
 
 .PHONY: test
-test:
-	echo "Not implemented"
+test: unit-test
 
 .PHONY: clean
 clean:
-	$(DOCKER_COMPOSE) down
+	$(DOCKER_COMPOSE_BASE) down
 
 .PHONY: mrclean
 mrclean: clean
