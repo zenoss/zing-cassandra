@@ -18,7 +18,7 @@ node('docker') {
     withEnv([
         "COMMIT_SHA=${env.ghprbActualCommit}",
         "IMAGE_TAG=${env.ghprbActualCommit.substring(0,8)}",
-        "PROJECT_NAME=zing-cassandra-${env.BUILD_NUMBER}"])
+        "PROJECT_NAME=zing-cassandra-${env.BUILD_NUMBER}"]) {
         try {
             stage('Unit tests') {
                 sh("${MAKE} unit-test")
