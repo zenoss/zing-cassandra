@@ -23,7 +23,7 @@ push: REMOTE_IMAGE_VALID IMAGE_NAME_VALID
 define VERSION_YAML
 version: "3.2"
 services:
-    zing-cassandra:
+    cassandra:
         image: $(REMOTE_IMAGE)
 endef
 
