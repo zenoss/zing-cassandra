@@ -19,14 +19,9 @@ node('docker') {
         "COMMIT_SHA=${env.ghprbActualCommit}",
         "IMAGE_TAG=${env.ghprbActualCommit.substring(0,8)}",
         "PROJECT_NAME=zing-cassandra-${env.BUILD_NUMBER}"]) {
-        try {
-            stage('Build image') {
-                sh("${MAKE} build")
-            }
-        } finally {
-            stage ('Clean test environment') {
-                sh("${MAKE} ci-clean")
-            }
+
+        stage('Build image') {
+            sh("${MAKE} build")
         }
 
         stage('Publish image') {
