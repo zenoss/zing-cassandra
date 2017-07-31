@@ -33,7 +33,7 @@ node('docker') {
             }
 
             stage('Validate test results') {
-                junit allowEmptyResults: true, "**/junit.xml"
+                junit allowEmptyResults: true, testResults: "**/junit.xml"
                 step([
                     $class: 'CoberturaPublisher',
                     autoUpdateHealth: false,
