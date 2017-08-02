@@ -5,20 +5,6 @@ MAKE='make -f ci/Makefile'
 node('docker') {
 
     currentBuild.displayName = "PR #${env.ghprbPullId}@${env.NODE_NAME}"
-    configFileProvider([
-        configFile(fileId: 'global', variable: 'GLOBAL'),
-    ]) {
-        global = load env.GLOBAL
-    }
-    HOST_MOUNT = sh(
-        script: "hostname | xargs -I@ docker inspect @ --format \"{{ (index .Mounts 1).Source }}\"",
-        returnStdout: true,
-    ).trim()
-    CTR_MOUNT = sh(
-        script: "hostname | xargs -I@ docker inspect @ --format \"{{ (index .Mounts 1).Destination }}\"",
-        returnStdout: true,
-    ).trim()
-    HOST_WORKSPACE = HOST_MOUNT + (env.WORKSPACE - CTR_MOUNT)
 
     stage('Checkout') {
         checkout scm
@@ -27,8 +13,7 @@ node('docker') {
     withEnv([
         "COMMIT_SHA=${env.ghprbActualCommit}",
         "IMAGE_TAG=${env.ghprbActualCommit.substring(0,8)}",
-        "PROJECT_NAME=zing-cassandra-${env.BUILD_NUMBER}",
-        "ROOTDIR=${HOST_WORKSPACE}"]) {
+        "PROJECT_NAME=zing-cassandra-${env.BUILD_NUMBER}"]) {
 
         stage('Build image') {
             sh("${MAKE} build")
