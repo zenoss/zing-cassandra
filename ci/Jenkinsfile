@@ -5,6 +5,11 @@ MAKE='make -f ci/Makefile'
 node('docker') {
 
     currentBuild.displayName = "PR #${env.ghprbPullId}@${env.NODE_NAME}"
+    configFileProvider([
+        configFile(fileId: 'global', variable: 'GLOBAL'),
+    ]) {
+        global = load env.GLOBAL
+    }
 
     stage('Checkout') {
         checkout scm
