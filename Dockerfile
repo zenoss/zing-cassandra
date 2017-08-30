@@ -1,10 +1,13 @@
-FROM cassandra:3.10
+FROM cassandra:3.11
 
 RUN apt-get update && \
-	apt-get install -y \
-		curl lsof \
+	apt-get install -y curl lsof gettext netcat \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN chown cassandra /docker-entrypoint.sh
+COPY src /home/cassandra
+RUN mv /docker-entrypoint.sh /home/cassandra && \
+    chown -R cassandra /home/cassandra
+
 USER cassandra
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/home/cassandra/bootstrap.sh"]
+
