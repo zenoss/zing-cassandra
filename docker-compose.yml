@@ -11,9 +11,13 @@ services:
         zenoss.zing.build_url: ${BUILD_URL:-none}
     image: ${SERVICE_IMAGE}:${IMAGE_TAG:-dev}
     command: "cassandra -f"
+    healthcheck:
+        test: nc -z localhost 9042 2>/dev/null 
     environment:
       - CASSANDRA_BROADCAST_ADDRESS=cassandra
       - CASSANDRA_SEEDS=cassandra
+      - DATACENTER=datacenter1
+      - REPLICATION=1
     volumes:
       - "cassandra:/var/lib/cassandra"
 
