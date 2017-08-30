@@ -16,7 +16,7 @@ log () {
 
 # Run all cql files from the schema directory
 init_schema() {
-    while ! nc -vz localhost 9042 ; do
+    while ! nc -vz localhost 9042 &>/dev/null ; do
         log INFO "Cassandra not ready; waiting..."
         sleep 3;
     done
